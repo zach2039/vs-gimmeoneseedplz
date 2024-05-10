@@ -1,14 +1,14 @@
 Gimme One Seed Plz
 =================
 
-A mod that keeps your sanity when looking for tree seeds from your favorite trees; trees will always drop at least one seed when felled.
+A server-side mod that keeps your sanity when looking for tree seeds from your favorite trees; trees will always drop at least one seed when felled.
 
 Overview
 --------
 
 Changes include:
 
- * Trees always drop one seed when felling with an axe... That's it. That's the mod.
+ * Trees always drop at least one seed when felling with an axe... That's it. That's the mod.
 
 
 Config Settings (`VintageStoryData/ModConfig/GimmeOneSeedPlz.json`)
