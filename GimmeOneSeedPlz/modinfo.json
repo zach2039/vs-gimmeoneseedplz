@@ -1,0 +1,16 @@
+{
+	"type": "code",
+	"modid": "gimmeoneseedplz",
+	"name": "Gimme One Seed Plz",
+	"authors": [
+		"Zach2039"
+	],
+	"description": "A mod that keeps your sanity when looking for tree seeds from your favorite trees; trees will always drop one seed when felled.",
+	"version": "1.0.0",
+	"dependencies": {
+		"game": "*"
+	},
+	"Side": "Server",
+	"RequiredOnClient": false,
+	"RequiredOnServer": true
+}

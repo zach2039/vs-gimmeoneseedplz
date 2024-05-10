@@ -9,7 +9,7 @@
                 "build",
                 "-c",
                 "Debug",
-                "${workspaceFolder}/ModTemplate/ModTemplate.csproj"
+                "${workspaceFolder}/GimmeOneSeedPlz/GimmeOneSeedPlz.csproj"
             ],
             "problemMatcher": "$msCompile"
         },
