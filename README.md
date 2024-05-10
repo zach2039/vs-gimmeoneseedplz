@@ -26,19 +26,29 @@ Config Settings (`VintageStoryData/ModConfig/GimmeOneSeedPlz.json`)
  
  * `GuaranteedTreeSeedsOnFelledCount`: How many tree seeds to drop from a felled tree; defaults to `1`.
 
+ * `MinRequiredBlocksBrokenOnFullFellCount`: How many blocks need to be broken to spawn a tree seed if the whole tree was felled; defaults to `3`.
+
+ * `MinRequiredBlocksBrokenOnPartialFellCount`: How many blocks need to be broken to spawn a tree seed if the whole tree is not felled; defaults to `35`.
+
 
 Future Plans
 --------
 
  - None, atm.
 
+
 Known Issues
 --------
 
  - None, atm.
 
+
 Extras
 --------
+
+ - Note that trees of less than `MinRequiredBlocksBrokenOnFullFellCount` blocks will not drop seeds still, even if fully felled.
+
+ - If a tree is partially cut down, it will only drop a seed if the total number of blocks broken is greater than `MinRequiredBlocksBrokenOnPartialFellCount`.
 
  - Cool modding fact: This mod was made for my wife. She hates cutting trees and getting nothing for it.
 

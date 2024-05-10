@@ -1,9 +1,9 @@
-﻿
-using Vintagestory.API.Common;
+﻿using Vintagestory.API.Common;
 using Vintagestory.API.Server;
-
-using HarmonyLib;
 using Vintagestory.API.MathTools;
+using GimmeOneSeedPlz.ModPatches;
+using Vintagestory.GameContent;
+using HarmonyLib;
 
 namespace GimmeOneSeedPlz
 {
@@ -42,23 +42,39 @@ namespace GimmeOneSeedPlz
 
 				if (GimmeOneSeedPlzConfig.Loaded.PatchVanillaItemAxeOnBlockBrokenWith)
 				{
-					harmony.PatchCategory("GimmeOneSeedPlz_ItemAxe");
+					var original = typeof(ItemAxe).GetMethod("OnBlockBrokenWith", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+					var prefix = typeof(Patch_ItemAxe_OnBlockBrokenWith).GetMethod("Prefix", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+					var postfix = typeof(Patch_ItemAxe_OnBlockBrokenWith).GetMethod("Postfix", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+					
+					harmony.Patch(original, new HarmonyMethod(prefix), new HarmonyMethod(postfix));			
+
 					sapi.Logger.Notification("Applied patch to VintageStory's ItemAxe.OnBlockBrokenWith from Gimme One Seed Plz!");
 				}
 
-                // Mod compatibility with Toolworks, but only if that mod is present
-				if (GimmeOneSeedPlzConfig.Loaded.PatchToolworksCollectibleBehaviorFellingOnBlockBrokenWith && sapi.ModLoader.IsModEnabled("toolworks"))
+				// Mod compatibility with Toolworks, but only if that mod is present
+				bool toolworks_enabled = sapi.ModLoader.IsModEnabled("toolworks");
+				if (GimmeOneSeedPlzConfig.Loaded.PatchToolworksCollectibleBehaviorFellingOnBlockBrokenWith && toolworks_enabled)
 				{
-					harmony.PatchCategory("GimmeOneSeedPlz_CollectibleBehaviorFelling");
+					PatchToolworks();
+
 					sapi.Logger.Notification("Applied patch to Toolworks' CollectibleBehaviorFelling.OnBlockBrokenWith from Gimme One Seed Plz!");
-				}
+				}					
 			}
 
 			base.StartServerSide(sapi);
 
 			sapi.Logger.Notification("Loaded Gimme One Seed Plz!");
 		}
-		
+
+		private void PatchToolworks()
+		{
+			var original = typeof(Toolworks.CollectibleBehaviorFelling).GetMethod("OnBlockBrokenWith", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+			var prefix = typeof(Patch_CollectibleBehaviorFelling_OnBlockBrokenWith).GetMethod("Prefix", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+			var postfix = typeof(Patch_CollectibleBehaviorFelling_OnBlockBrokenWith).GetMethod("Postfix", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+			
+			harmony.Patch(original, new HarmonyMethod(prefix), new HarmonyMethod(postfix));
+		}
+
 		public override void Dispose()
 		{
 

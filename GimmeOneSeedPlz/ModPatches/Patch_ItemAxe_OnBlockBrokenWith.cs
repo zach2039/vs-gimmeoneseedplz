@@ -11,7 +11,7 @@ namespace GimmeOneSeedPlz.ModPatches
 {
 	[HarmonyPatchCategory("GimmeOneSeedPlz_ItemAxe")]
 	[HarmonyPatch(typeof(ItemAxe), "OnBlockBrokenWith")]
-	static class Patch_ItemAxe_OnBlockBrokenWith
+	class Patch_ItemAxe_OnBlockBrokenWith
 	{
 		static bool Prefix(ItemAxe __instance, ref Tuple<Block, Stack<BlockPos>> __state, IWorldAccessor world, Entity byEntity, ItemSlot itemslot, BlockSelection blockSel, float dropQuantityMultiplier)
 		{
@@ -22,7 +22,7 @@ namespace GimmeOneSeedPlz.ModPatches
 				int woodTier;
 				Stack<BlockPos> foundPositions = __instance.FindTree(world, blockSel.Position, out num, out woodTier);
 
-				if (foundPositions.Count == 0)
+				if (foundPositions.Count < GimmeOneSeedPlzConfig.Loaded.MinRequiredBlocksBrokenCount)
 				{
 					return true;
 				}
@@ -59,13 +59,13 @@ namespace GimmeOneSeedPlz.ModPatches
 				{
                     int num;
     				int woodTier;
-                    Stack<BlockPos> foundPositions = __instance.FindTree(world, blockSel.Position, out num, out woodTier);
+					Stack<BlockPos> foundPositionsBelow = __instance.FindTree(world, blockSel.Position.DownCopy(), out num, out woodTier);
 
-                    // Check if we can find a tree now; if not, then it is considered felled
-                    // If we can find a tree, compare the counts of the blocks, and drop if felled block count greater than 35.
-                    if (foundPositions.Count != 0)
+					// If tree is not missing, we need to check for total number of blocks felled from original
+                    if (foundPositionsBelow.Count != 0)
                     {
-						if (__state.Item2.Count - foundPositions.Count < 35)
+						// If we didn't cut 35 blocks, was not felled
+						if (__state.Item2.Count - foundPositionsBelow.Count < 35)
 						{
 							return;
 						}
