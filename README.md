@@ -1,7 +1,7 @@
 Gimme One Seed Plz
 =================
 
-A mod that keeps your sanity when looking for tree seeds from your favorite trees; trees will always drop one seed when felled.
+A mod that keeps your sanity when looking for tree seeds from your favorite trees; trees will always drop at least one seed when felled.
 
 Overview
 --------
