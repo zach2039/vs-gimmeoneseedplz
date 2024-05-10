@@ -40,5 +40,5 @@ Known Issues
 Extras
 --------
 
- - This mod was made for my wife. She hates cutting trees and getting nothing for it.
+ - Cool modding fact: This mod was made for my wife. She hates cutting trees and getting nothing for it.
 
