@@ -22,7 +22,7 @@ namespace GimmeOneSeedPlz.ModPatches
 				int woodTier;
 				Stack<BlockPos> foundPositions = __instance.FindTree(world, blockSel.Position, out num, out woodTier);
 
-				if (foundPositions.Count < GimmeOneSeedPlzConfig.Loaded.MinRequiredBlocksBrokenCount)
+				if (foundPositions.Count < GimmeOneSeedPlzConfig.Loaded.MinRequiredBlocksBrokenOnFullFellCount)
 				{
 					return true;
 				}
@@ -65,7 +65,7 @@ namespace GimmeOneSeedPlz.ModPatches
                     if (foundPositionsBelow.Count != 0)
                     {
 						// If we didn't cut 35 blocks, was not felled
-						if (__state.Item2.Count - foundPositionsBelow.Count < 35)
+						if (__state.Item2.Count - foundPositionsBelow.Count < GimmeOneSeedPlzConfig.Loaded.MinRequiredBlocksBrokenOnPartialFellCount)
 						{
 							return;
 						}
