@@ -1,7 +1,7 @@
 Gimme One Seed Plz
 =================
 
-A server-side mod that keeps your sanity when looking for tree seeds from your favorite trees; trees will always drop at least one seed when felled.
+A server-side mod that preserves your sanity when looking for tree seeds from your favorite trees; trees will always drop at least one seed when felled.
 
 Overview
 --------
