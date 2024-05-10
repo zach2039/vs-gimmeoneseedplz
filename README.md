@@ -11,6 +11,12 @@ Changes include:
  * Trees always drop at least one seed when felling with an axe... That's it. That's the mod.
 
 
+Compatibility
+--------
+
+ - Should be compatibile with [Wildcraft Trees](https://mods.vintagestory.at/wildcrafttree), and any other mod that uses "treeseed-{wood}" as an item for their trees.
+
+
 Config Settings (`VintageStoryData/ModConfig/GimmeOneSeedPlz.json`)
 --------
 
@@ -24,12 +30,15 @@ Config Settings (`VintageStoryData/ModConfig/GimmeOneSeedPlz.json`)
 Future Plans
 --------
 
+ - None, atm.
 
 Known Issues
 --------
 
+ - None, atm.
 
 Extras
 --------
 
+ - This mod was made for my wife. She hates cutting trees and getting nothing for it.
 
