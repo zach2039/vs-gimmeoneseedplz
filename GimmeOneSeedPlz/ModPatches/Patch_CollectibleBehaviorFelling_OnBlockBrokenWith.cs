@@ -76,7 +76,7 @@ namespace GimmeOneSeedPlz.ModPatches
                     string domain = woodBlock.Code.Domain;
 
                     // Block better be a log
-                    if (woodBlock.Code.BeginsWith(domain, "log"))
+                    if (woodBlock.Code.BeginsWith(domain, "log") && woodBlock.Variant["type"] == "grown")
                     {
                         string woodtype = woodBlock.Variant["wood"];
 
