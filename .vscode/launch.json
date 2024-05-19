@@ -24,7 +24,8 @@
                 "${workspaceFolder}/GimmeOneSeedPlz/bin/Debug/Mods"
             ],
             "console": "internalConsole",
-            "stopAtEntry": false
+            "stopAtEntry": false,
+            "justMyCode": false
         },
         {
             "name": "Launch Server",

@@ -10,6 +10,8 @@ Changes include:
 
  * Trees always drop at least one seed when felling with an axe... That's it. That's the mod.
 
+ * Fixes a bug in vanilla related to Crimson Maple leaves not being counted as leaves during tree felling.
+
 
 Compatibility
 --------
