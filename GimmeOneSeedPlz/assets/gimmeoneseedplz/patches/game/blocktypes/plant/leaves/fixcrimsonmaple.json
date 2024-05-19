@@ -1,0 +1,48 @@
+[
+	{
+		"file": "game:blocktypes/plant/leaves/normal.json",
+		"op": "replace",
+		"path": "/attributes/treeFellingGroupCodeByType",
+		"value":{
+			"*-grown-crimsonkingmaple": "0maple",
+			"*-grown1-crimsonkingmaple": "1maple",
+			"*-grown2-crimsonkingmaple": "2maple",
+			"*-grown3-crimsonkingmaple": "3maple",
+			"*-grown4-crimsonkingmaple": "4maple",
+			"*-grown5-crimsonkingmaple": "5maple",
+			"*-grown6-crimsonkingmaple": "6maple",
+			"*-grown7-crimsonkingmaple": "7maple",
+			"*-grown-*": "0{wood}",
+			"*-grown1-*": "1{wood}",
+			"*-grown2-*": "2{wood}",
+			"*-grown3-*": "3{wood}",
+			"*-grown4-*": "4{wood}",
+			"*-grown5-*": "5{wood}",
+			"*-grown6-*": "6{wood}",
+			"*-grown7-*": "7{wood}"
+		}
+	},
+	{
+		"file": "game:blocktypes/plant/leaves/branchy.json",
+		"op": "replace",
+		"path": "/attributes/treeFellingGroupCodeByType",
+		"value":{
+			"*-grown-crimsonkingmaple": "0maple",
+			"*-grown1-crimsonkingmaple": "1maple",
+			"*-grown2-crimsonkingmaple": "2maple",
+			"*-grown3-crimsonkingmaple": "3maple",
+			"*-grown4-crimsonkingmaple": "4maple",
+			"*-grown5-crimsonkingmaple": "5maple",
+			"*-grown6-crimsonkingmaple": "6maple",
+			"*-grown7-crimsonkingmaple": "7maple",
+			"*-grown-*": "0{wood}",
+			"*-grown1-*": "1{wood}",
+			"*-grown2-*": "2{wood}",
+			"*-grown3-*": "3{wood}",
+			"*-grown4-*": "4{wood}",
+			"*-grown5-*": "5{wood}",
+			"*-grown6-*": "6{wood}",
+			"*-grown7-*": "7{wood}"
+		}
+	}
+]
