@@ -4,6 +4,8 @@ using Vintagestory.API.MathTools;
 using GimmeOneSeedPlz.ModPatches;
 using Vintagestory.GameContent;
 using HarmonyLib;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace GimmeOneSeedPlz
 {
@@ -12,28 +14,28 @@ namespace GimmeOneSeedPlz
 		public Harmony harmony;
 
 		public override void StartPre(ICoreAPI api)
-        {
-            string cfgFileName = "GimmeOneSeedPlz.json";
+		{
+			string cfgFileName = "GimmeOneSeedPlz.json";
 
-            try 
-            {
-                GimmeOneSeedPlzConfig cfgFromDisk;
-                if ((cfgFromDisk = api.LoadModConfig<GimmeOneSeedPlzConfig>(cfgFileName)) == null)
-                {
-                    api.StoreModConfig(GimmeOneSeedPlzConfig.Loaded, cfgFileName);
-                }
-                else
-                {
-                    GimmeOneSeedPlzConfig.Loaded = cfgFromDisk;
-                }
-            } 
-            catch 
-            {
-                api.StoreModConfig(GimmeOneSeedPlzConfig.Loaded, cfgFileName);
-            }
+			try 
+			{
+				GimmeOneSeedPlzConfig cfgFromDisk;
+				if ((cfgFromDisk = api.LoadModConfig<GimmeOneSeedPlzConfig>(cfgFileName)) == null)
+				{
+					api.StoreModConfig(GimmeOneSeedPlzConfig.Loaded, cfgFileName);
+				}
+				else
+				{
+					GimmeOneSeedPlzConfig.Loaded = cfgFromDisk;
+				}
+			} 
+			catch 
+			{
+				api.StoreModConfig(GimmeOneSeedPlzConfig.Loaded, cfgFileName);
+			}
 
-            base.StartPre(api);
-        }
+			base.StartPre(api);
+		}
 
 		public override void StartServerSide(ICoreServerAPI sapi)
 		{
@@ -85,8 +87,28 @@ namespace GimmeOneSeedPlz
 			if (world.Side.IsServer() && (byPlayer == null || byPlayer.WorldData.CurrentGameMode != EnumGameMode.Creative))
 			{
 				ItemStack stack = itemStack.Clone();
-                world.SpawnItemEntity(stack, new Vec3d((double)pos.X + 0.5, (double)pos.Y + 0.5, (double)pos.Z + 0.5), null);
+				world.SpawnItemEntity(stack, new Vec3d((double)pos.X + 0.5, (double)pos.Y + 0.5, (double)pos.Z + 0.5), null);
 			}
 		}
+
+		public static BlockLeaves GetLeavesFromTreeStack(IWorldAccessor world, Stack<BlockPos> treePositionStack)
+		{
+			while (treePositionStack.Count > 0)
+			{
+				BlockPos blockPos = treePositionStack.Pop();
+				Block block = world.BlockAccessor.GetBlock(blockPos);
+
+				if (block.BlockMaterial == EnumBlockMaterial.Leaves && block is BlockLeaves blockLeaves)
+				{
+					return blockLeaves;
+				}
+			}
+
+			return null;
+		}
+
+		#nullable enable
+		public record struct FelledTreeData(Block? AxedBlock, int NumTreeBlocks, BlockLeaves? FirstLeafBlock);
+		#nullable disable
 	}
 }
