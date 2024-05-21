@@ -1,3 +1,8 @@
+### v1.19.x-1.0.3
+
+- Fix seed fallback not actually falling back to log
+- Fix not working with wildcraft trees due to above, and bug in wildcraft trees and placed leaves
+
 ### v1.19.x-1.0.2
 
 - Change seed finding to use leaves first, then log as fallback

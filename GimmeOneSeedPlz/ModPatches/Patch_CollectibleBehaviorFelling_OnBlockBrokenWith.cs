@@ -90,7 +90,8 @@ namespace GimmeOneSeedPlz.ModPatches
 						}
 					}
 				}
-				else
+				
+				if (seedItem == null)
 				{
 					if (woodBlock.Code.BeginsWith(domain, "log") && woodBlock.Variant["type"] == "grown")
 					{
