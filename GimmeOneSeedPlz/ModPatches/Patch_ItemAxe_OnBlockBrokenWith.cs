@@ -85,7 +85,12 @@ namespace GimmeOneSeedPlz.ModPatches
 						seedItem = world.SearchItems(new AssetLocation(domain, "treeseed-" + woodtype)).FirstOrDefault<Item>();
 						if (seedItem == null)
 						{
-							world.Api.Logger.Warning("[GimmeOneSeedPlz] Could not find tree seed for leaf block " + leavesBlock.Code.ToString());
+                            // Try fallback to game domain, if seed item is not found
+                            seedItem = world.SearchItems(new AssetLocation("game", "treeseed-" + woodtype)).FirstOrDefault<Item>();
+							if (seedItem == null)
+							{
+								world.Api.Logger.Warning("[GimmeOneSeedPlz] Could not find tree seed for leaf block " + leavesBlock.Code.ToString());
+							}
 						}
 					}
 				}
@@ -98,7 +103,12 @@ namespace GimmeOneSeedPlz.ModPatches
 						seedItem = world.SearchItems(new AssetLocation(domain, "treeseed-" + woodtype)).FirstOrDefault<Item>();
 						if (seedItem == null)
 						{
-							world.Api.Logger.Warning("[GimmeOneSeedPlz] Could not find tree seed for log block " + woodBlock.Code.ToString());
+                            // Try fallback to game domain, if seed item is not found
+                            seedItem = world.SearchItems(new AssetLocation("game", "treeseed-" + woodtype)).FirstOrDefault<Item>();
+                            if (seedItem == null)
+                            {
+                                world.Api.Logger.Warning("[GimmeOneSeedPlz] Could not find tree seed for log block " + leavesBlock.Code.ToString());
+                            }
 						}
 					}
 				}
