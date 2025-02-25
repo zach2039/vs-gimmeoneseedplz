@@ -1,3 +1,7 @@
+### v1.20.x-1.0.5
+
+- Fix logging issue during fallback seed scan
+
 ### v1.20.x-1.0.4
 
 - Fix compat issue with Under Tangled Boughs; always fallback to 'game' domain when searching for tree seeds
