@@ -108,7 +108,7 @@ namespace GimmeOneSeedPlz.ModPatches
                             seedItem = world.SearchItems(new AssetLocation("game", "treeseed-" + woodtype)).FirstOrDefault<Item>();
                             if (seedItem == null)
                             {
-                                // Fallback to wildcrafttree domain, if seed item is STILL not found; this fixes issues with UTB stumps and Wildcraft Trees
+                                // Fallback to wildcrafttree domain, if seed item is STILL not found; this might fix issues with UTB stumps and Wildcraft Trees
                                 seedItem = world.SearchItems(new AssetLocation("wildcrafttree", "treeseed-" + woodtype)).FirstOrDefault<Item>();
                                 if (seedItem == null)
                                 {
@@ -119,7 +119,7 @@ namespace GimmeOneSeedPlz.ModPatches
 					}
 				}
 
-                // Under Tangled Boughs Treestumps need special treatment when dealing with wildcraft trees
+                // Under Tangled Boughs Treestumps need special treatment
                 if (seedItem == null)
                 {
                     if (woodBlock.Code.BeginsWith(domain, "utbtreestump") && woodBlock.Variant["type"] == "grown")

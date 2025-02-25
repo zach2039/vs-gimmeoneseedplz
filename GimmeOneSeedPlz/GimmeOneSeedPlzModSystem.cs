@@ -60,8 +60,17 @@ namespace GimmeOneSeedPlz
 					PatchToolworks();
 
 					sapi.Logger.Notification("Applied patch to Toolworks' CollectibleBehaviorFelling.OnBlockBrokenWith from Gimme One Seed Plz!");
-				}					
-			}
+				}
+
+                // Mod compatibility with IDG, but only if that mod is present
+                bool indappledgroves_enabled = sapi.ModLoader.IsModEnabled("indappledgroves");
+                if (GimmeOneSeedPlzConfig.Loaded.PatchIDGCollectibleBehaviorWoodChoppingOnBlockBroken && indappledgroves_enabled)
+                {
+                    PatchIDG();
+
+                    sapi.Logger.Notification("Applied patch to InDappledGroves' BehaviorWoodChopping.OnBlockBroken from Gimme One Seed Plz!");
+                }
+            }
 
 			base.StartServerSide(sapi);
 
@@ -77,7 +86,17 @@ namespace GimmeOneSeedPlz
 			harmony.Patch(original, new HarmonyMethod(prefix), new HarmonyMethod(postfix));
 		}
 
-		public override void Dispose()
+        private void PatchIDG()
+        {
+            var typeBehaviorWoodChopping = AccessTools.TypeByName("InDappledGroves.BehaviorWoodChopping");
+            var original = typeBehaviorWoodChopping.GetMethod("OnBlockBrokenWith", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            var prefix = typeof(Patch_BehaviorWoodChopping_OnBlockBrokenWith).GetMethod("Prefix", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+            var postfix = typeof(Patch_BehaviorWoodChopping_OnBlockBrokenWith).GetMethod("Postfix", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+
+            harmony.Patch(original, new HarmonyMethod(prefix), new HarmonyMethod(postfix));
+        }
+
+        public override void Dispose()
 		{
 
 		}

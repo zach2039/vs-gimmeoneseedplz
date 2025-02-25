@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using HarmonyLib;
+using InDappledGroves;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.MathTools;
@@ -9,18 +12,20 @@ using Vintagestory.GameContent;
 
 namespace GimmeOneSeedPlz.ModPatches
 {
-	[HarmonyPatchCategory("GimmeOneSeedPlz_ItemAxe")]
-	[HarmonyPatch(typeof(ItemAxe), "OnBlockBrokenWith")]
-	public class Patch_ItemAxe_OnBlockBrokenWith
-	{
-		static bool Prefix(ItemAxe __instance, ref GimmeOneSeedPlzModSystem.FelledTreeData __state, IWorldAccessor world, Entity byEntity, ItemSlot itemslot, BlockSelection blockSel, float dropQuantityMultiplier)
+	[HarmonyPatchCategory("GimmeOneSeedPlz_BehaviorWoodChopping")]
+	[HarmonyPatch(typeof(Object), "OnBlockBrokenWith")]
+	public class Patch_BehaviorWoodChopping_OnBlockBrokenWith
+    {
+		static bool Prefix(Object __instance, ref GimmeOneSeedPlzModSystem.FelledTreeData __state, IWorldAccessor world, Entity byEntity, ItemSlot itemslot, BlockSelection blockSel, float dropQuantityMultiplier, ref EnumHandling bhHandling)
 		{
 			if (world.Side.IsServer())
 			{
 				// Save first tree block to be used later
-				int num;
-				int woodTier;
-				Stack<BlockPos> foundPositions = __instance.FindTree(world, blockSel.Position, out num, out woodTier);
+                var typeBehaviorWoodChopping = AccessTools.TypeByName("InDappledGroves.BehaviorWoodChopping");
+				var findTreeMethod = AccessTools.Method(typeBehaviorWoodChopping, "FindTree");
+
+				object[] parameters = new object[] { world, blockSel.Position, null, null };
+                Stack<BlockPos> foundPositions = (Stack<BlockPos>)findTreeMethod.Invoke(__instance, parameters);
 
 				if (foundPositions.Count < GimmeOneSeedPlzConfig.Loaded.MinRequiredBlocksBrokenOnFullFellCount)
 				{
@@ -28,7 +33,7 @@ namespace GimmeOneSeedPlz.ModPatches
 				}
 
 				BlockPos firstPos = blockSel.Position;
-
+				
 				if (firstPos != null)
 				{
 					BlockLeaves blockLeaves = GimmeOneSeedPlzModSystem.GetLeavesFromTreeStack(world, foundPositions);
@@ -39,26 +44,28 @@ namespace GimmeOneSeedPlz.ModPatches
 					__state = new GimmeOneSeedPlzModSystem.FelledTreeData(null, -1, null);
 				}
 			}
-			
+
 			return true; // continue with original method
 		}
 
-		static void Postfix(ItemAxe __instance, ref GimmeOneSeedPlzModSystem.FelledTreeData __state, IWorldAccessor world, Entity byEntity, ItemSlot itemslot, BlockSelection blockSel, float dropQuantityMultiplier)
+		static void Postfix(Object __instance, ref GimmeOneSeedPlzModSystem.FelledTreeData __state, IWorldAccessor world, Entity byEntity, ItemSlot itemslot, BlockSelection blockSel, float dropQuantityMultiplier, ref EnumHandling bhHandling)
 		{
-			// Log itemcode will be log-{type}-{wood}-{rotation}
-			// Tree seed itemcode will be treeseed-{wood}
-
-			if (world.Side.IsServer())
+            // Log itemcode will be log-{type}-{wood}-{rotation}
+            // Tree seed itemcode will be treeseed-{wood}
+            
+            if (world.Side.IsServer())
 			{
-                if (__state.AxedBlock == null || __state.NumTreeBlocks == -1)
-                {
-                    return;
-                }
+				if (__state.AxedBlock == null || __state.NumTreeBlocks == -1)
+				{
+					return;
+				}
 
-				// Positions remaining is 0, I am 99% sure a tree was fully felled, so have at it!
-				int num;
-				int woodTier;
-				Stack<BlockPos> foundPositionsBelow = __instance.FindTree(world, blockSel.Position.DownCopy(), out num, out woodTier);
+                // Positions remaining is 0, I am 99% sure a tree was fully felled, so have at it!
+                var typeBehaviorWoodChopping = AccessTools.TypeByName("InDappledGroves.BehaviorWoodChopping");
+                var findTreeMethod = AccessTools.Method(typeBehaviorWoodChopping, "FindTree");
+
+                object[] parameters = new object[] { world, blockSel.Position.DownCopy(), null, null };
+                Stack<BlockPos> foundPositionsBelow = (Stack<BlockPos>)findTreeMethod.Invoke(__instance, parameters);
 
 				// If tree is not missing, we need to check for total number of blocks felled from original
 				if (foundPositionsBelow.Count != 0)
@@ -87,10 +94,10 @@ namespace GimmeOneSeedPlz.ModPatches
 						{
                             // Try fallback to game domain, if seed item is not found
                             seedItem = world.SearchItems(new AssetLocation("game", "treeseed-" + woodtype)).FirstOrDefault<Item>();
-							if (seedItem == null)
-							{
-								world.Api.Logger.Warning("[GimmeOneSeedPlz] Could not find tree seed for leaf block " + leavesBlock.Code.ToString());
-							}
+                            if (seedItem == null)
+                            {
+                                world.Api.Logger.Warning("[GimmeOneSeedPlz] Could not find tree seed for leaf block " + leavesBlock.Code.ToString());
+                            }
 						}
 					}
 				}
@@ -118,7 +125,7 @@ namespace GimmeOneSeedPlz.ModPatches
 					}
 				}
 
-				// Under Tangled Boughs Treestumps need special treatment when dealing with wildcraft trees
+                // Under Tangled Boughs Treestumps need special treatment
                 if (seedItem == null)
                 {
                     if (woodBlock.Code.BeginsWith(domain, "utbtreestump") && woodBlock.Variant["type"] == "grown")
@@ -139,17 +146,17 @@ namespace GimmeOneSeedPlz.ModPatches
 
                 // Drop some stuff if we found the seed
                 if (seedItem != null)
-				{
-					IPlayer byPlayer = null;
-					if (byEntity is EntityPlayer)
-					{
-						byPlayer = byEntity.World.PlayerByUid(((EntityPlayer)byEntity).PlayerUID);
-					}
+                {
+                    IPlayer byPlayer = null;
+                    if (byEntity is EntityPlayer)
+                    {
+                        byPlayer = byEntity.World.PlayerByUid(((EntityPlayer)byEntity).PlayerUID);
+                    }
 
-					ItemStack seedItemStack = new ItemStack(seedItem, GimmeOneSeedPlzConfig.Loaded.GuaranteedTreeSeedsOnFelledCount);
-					GimmeOneSeedPlzModSystem.DropItemStack(world, blockSel.Position, byPlayer, seedItemStack);
-				}	
-			}
+                    ItemStack seedItemStack = new ItemStack(seedItem, GimmeOneSeedPlzConfig.Loaded.GuaranteedTreeSeedsOnFelledCount);
+                    GimmeOneSeedPlzModSystem.DropItemStack(world, blockSel.Position, byPlayer, seedItemStack);
+                }
+            }
 		}
 	}
 }
