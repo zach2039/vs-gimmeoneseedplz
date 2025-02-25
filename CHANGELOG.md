@@ -1,3 +1,7 @@
+### v1.20.x-1.0.6
+
+- Fix wildcraft tree seed scan failing with UTB installed
+
 ### v1.20.x-1.0.5
 
 - Fix logging issue during fallback seed scan

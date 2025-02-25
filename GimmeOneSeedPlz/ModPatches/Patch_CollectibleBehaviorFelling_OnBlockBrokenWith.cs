@@ -108,14 +108,38 @@ namespace GimmeOneSeedPlz.ModPatches
                             seedItem = world.SearchItems(new AssetLocation("game", "treeseed-" + woodtype)).FirstOrDefault<Item>();
                             if (seedItem == null)
                             {
-                                world.Api.Logger.Warning("[GimmeOneSeedPlz] Could not find tree seed for log block " + woodBlock.Code.ToString());
+                                // Fallback to wildcrafttree domain, if seed item is STILL not found; this fixes issues with UTB stumps and Wildcraft Trees
+                                seedItem = world.SearchItems(new AssetLocation("wildcrafttree", "treeseed-" + woodtype)).FirstOrDefault<Item>();
+                                if (seedItem == null)
+                                {
+                                    world.Api.Logger.Warning("[GimmeOneSeedPlz] Could not find tree seed for log block " + woodBlock.Code.ToString());
+                                }
                             }
 						}
 					}
 				}
 
-				// Drop some stuff if we found the seed
-				if (seedItem != null)
+                // Under Tangled Boughs Treestumps need special treatment when dealing with wildcraft trees
+                if (seedItem == null)
+                {
+                    if (woodBlock.Code.BeginsWith(domain, "utbtreestump") && woodBlock.Variant["type"] == "grown")
+                    {
+                        string woodtype = woodBlock.Variant["wood"];
+                        seedItem = world.SearchItems(new AssetLocation(domain, "treeseed-" + woodtype)).FirstOrDefault<Item>();
+                        if (seedItem == null)
+                        {
+                            // Try fallback to game domain, if seed item is not found
+                            seedItem = world.SearchItems(new AssetLocation("game", "treeseed-" + woodtype)).FirstOrDefault<Item>();
+                            if (seedItem == null)
+                            {
+                                world.Api.Logger.Warning("[GimmeOneSeedPlz] Could not find tree seed for log block " + woodBlock.Code.ToString());
+                            }
+                        }
+                    }
+                }
+
+                // Drop some stuff if we found the seed
+                if (seedItem != null)
 				{
 					IPlayer byPlayer = null;
 					if (byEntity is EntityPlayer)
