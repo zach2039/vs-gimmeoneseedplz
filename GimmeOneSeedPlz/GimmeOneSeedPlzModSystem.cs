@@ -89,7 +89,7 @@ namespace GimmeOneSeedPlz
         private void PatchIDG()
         {
             var typeBehaviorWoodChopping = AccessTools.TypeByName("InDappledGroves.BehaviorWoodChopping");
-            var original = typeBehaviorWoodChopping.GetMethod("OnBlockBrokenWith", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            var original = typeBehaviorWoodChopping.GetMethod("OnBlockBrokenWith", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.V);
             var prefix = typeof(Patch_BehaviorWoodChopping_OnBlockBrokenWith).GetMethod("Prefix", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
             var postfix = typeof(Patch_BehaviorWoodChopping_OnBlockBrokenWith).GetMethod("Postfix", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
