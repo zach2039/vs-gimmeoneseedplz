@@ -14,7 +14,7 @@ namespace GimmeOneSeedPlz
 
         public bool PatchToolworksCollectibleBehaviorFellingOnBlockBrokenWith { get; set; } = true;
 
-        public bool PatchIDGCollectibleBehaviorWoodChoppingOnBlockBroken { get; set; } = true;
+        public bool PatchIDGCollectibleBehaviorWoodChoppingOnBlockBrokenWith { get; set; } = true;
 
         public int GuaranteedTreeSeedsOnFelledCount { get; set; } = 1;
 

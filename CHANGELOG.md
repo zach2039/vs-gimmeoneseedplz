@@ -1,3 +1,7 @@
+### v1.20.x-1.0.7
+
+- Add patch for In Dappled Groves custom felling behavior
+
 ### v1.20.x-1.0.6
 
 - Fix wildcraft tree seed scan failing with UTB installed

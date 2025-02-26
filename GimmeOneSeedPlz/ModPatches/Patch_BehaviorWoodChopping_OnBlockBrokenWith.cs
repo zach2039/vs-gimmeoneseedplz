@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using HarmonyLib;
 using InDappledGroves;
@@ -14,6 +15,7 @@ namespace GimmeOneSeedPlz.ModPatches
 {
 	[HarmonyPatchCategory("GimmeOneSeedPlz_BehaviorWoodChopping")]
 	[HarmonyPatch(typeof(Object), "OnBlockBrokenWith")]
+	[HarmonyPatch]
 	public class Patch_BehaviorWoodChopping_OnBlockBrokenWith
     {
 		static bool Prefix(Object __instance, ref GimmeOneSeedPlzModSystem.FelledTreeData __state, IWorldAccessor world, Entity byEntity, ItemSlot itemslot, BlockSelection blockSel, float dropQuantityMultiplier, ref EnumHandling bhHandling)
@@ -42,10 +44,10 @@ namespace GimmeOneSeedPlz.ModPatches
 				else
 				{
 					__state = new GimmeOneSeedPlzModSystem.FelledTreeData(null, -1, null);
-				}
-			}
+                }
+            }
 
-			return true; // continue with original method
+            return true; // continue with original method
 		}
 
 		static void Postfix(Object __instance, ref GimmeOneSeedPlzModSystem.FelledTreeData __state, IWorldAccessor world, Entity byEntity, ItemSlot itemslot, BlockSelection blockSel, float dropQuantityMultiplier, ref EnumHandling bhHandling)
