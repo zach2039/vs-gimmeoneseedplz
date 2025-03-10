@@ -31,7 +31,13 @@ Config Settings (`VintageStoryData/ModConfig/GimmeOneSeedPlz.json`)
  * `MinRequiredBlocksBrokenOnFullFellCount`: How many blocks need to be broken to spawn a tree seed if the whole tree was felled; defaults to `3`.
 
  * `MinRequiredBlocksBrokenOnPartialFellCount`: How many blocks need to be broken to spawn a tree seed if the whole tree is not felled; defaults to `35`.
-
+ 
+ * `UseAvgVarDropSettings`: Enables or disables using `TreeSeedDropAvg` and `TreeSeedDropVar` to configure drop chances for seeds rather than `GuaranteedTreeSeedsOnFelledCount`; defaults to `false`.
+ 
+ * `TreeSeedDropAvg`: Sets the average quantity of seed drops; defaults to `0.5`.
+ 
+ * `TreeSeedDropVar`: Sets the variance for quantity of seed drops; defaults to `6.0`.
+ 
 
 Future Plans
 --------

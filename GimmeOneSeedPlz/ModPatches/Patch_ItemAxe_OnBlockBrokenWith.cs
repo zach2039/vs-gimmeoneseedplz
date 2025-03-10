@@ -146,7 +146,7 @@ namespace GimmeOneSeedPlz.ModPatches
 						byPlayer = byEntity.World.PlayerByUid(((EntityPlayer)byEntity).PlayerUID);
 					}
 
-					ItemStack seedItemStack = new ItemStack(seedItem, GimmeOneSeedPlzConfig.Loaded.GuaranteedTreeSeedsOnFelledCount);
+					ItemStack seedItemStack = new ItemStack(seedItem, GimmeOneSeedPlzConfig.Loaded.GuaranteedTreeSeedsOnFelledCount.Value);
 					GimmeOneSeedPlzModSystem.DropItemStack(world, blockSel.Position, byPlayer, seedItemStack);
 				}	
 			}

@@ -6,6 +6,11 @@ using Vintagestory.GameContent;
 using HarmonyLib;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Reflection;
+using System;
+using static Toolworks.Config.ConfigSystem;
 
 namespace GimmeOneSeedPlz
 {
@@ -13,7 +18,9 @@ namespace GimmeOneSeedPlz
 	{
 		public Harmony harmony;
 
-		public override void StartPre(ICoreAPI api)
+        private NullabilityInfoContext _nullabilityContext = new NullabilityInfoContext();
+
+        public override void StartPre(ICoreAPI api)
 		{
 			string cfgFileName = "GimmeOneSeedPlz.json";
 
@@ -22,17 +29,51 @@ namespace GimmeOneSeedPlz
 				GimmeOneSeedPlzConfig cfgFromDisk;
 				if ((cfgFromDisk = api.LoadModConfig<GimmeOneSeedPlzConfig>(cfgFileName)) == null)
 				{
+					// File with defaults generated and stored in ModConfig directory
 					api.StoreModConfig(GimmeOneSeedPlzConfig.Loaded, cfgFileName);
-				}
+                    api.Logger.Notification("[GimmeOneSeedPlz] Config file generated from defaults");
+                }
 				else
 				{
-					GimmeOneSeedPlzConfig.Loaded = cfgFromDisk;
-				}
+                    // File loaded successfully
+                    GimmeOneSeedPlzConfig.Loaded = cfgFromDisk;
+					api.Logger.Notification("[GimmeOneSeedPlz] Config file loaded");
+
+                }
 			} 
 			catch 
 			{
-				api.StoreModConfig(GimmeOneSeedPlzConfig.Loaded, cfgFileName);
-			}
+                // File with defaults re-generated and stored in ModConfig directory due to errors reading
+                api.StoreModConfig(GimmeOneSeedPlzConfig.Loaded, cfgFileName);
+                api.Logger.Error("[GimmeOneSeedPlz] Config file re-generated from defaults due to error");
+            }
+			finally
+			{
+				bool saveNewValues = false;
+				GimmeOneSeedPlzConfig defaultConfig = GimmeOneSeedPlzConfig.GetDefault();
+
+                foreach (PropertyInfo prop in typeof(GimmeOneSeedPlzConfig).GetProperties())
+                {
+                    var nullabilityInfo = _nullabilityContext.Create(prop);
+                    if (nullabilityInfo.WriteState is NullabilityState.Nullable)
+                    {
+                        if (prop.GetValue(GimmeOneSeedPlzConfig.Loaded) == null)
+						{
+							var defaultValue = prop.GetValue(defaultConfig);
+							prop.SetValue(GimmeOneSeedPlzConfig.Loaded, defaultValue);
+							saveNewValues = true;
+                            api.Logger.Warning($"[GimmeOneSeedPlz] Missing {prop.Name} in loaded config; will populate with default value {defaultValue} and append to existing config");
+                        }
+                    }
+                }
+
+                if (saveNewValues)
+                {
+                    // File with defaults for missing properties generated and stored in ModConfig directory
+                    api.StoreModConfig(GimmeOneSeedPlzConfig.Loaded, cfgFileName);
+                    api.Logger.Warning("[GimmeOneSeedPlz] Config file re-written");
+                }
+            }
 
 			base.StartPre(api);
 		}
@@ -42,7 +83,7 @@ namespace GimmeOneSeedPlz
 			if (!Harmony.HasAnyPatches(Mod.Info.ModID)) {
 				harmony = new Harmony(Mod.Info.ModID);
 
-				if (GimmeOneSeedPlzConfig.Loaded.PatchVanillaItemAxeOnBlockBrokenWith)
+				if (GimmeOneSeedPlzConfig.Loaded.PatchVanillaItemAxeOnBlockBrokenWith.Value)
 				{
 					var original = typeof(ItemAxe).GetMethod("OnBlockBrokenWith", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
 					var prefix = typeof(Patch_ItemAxe_OnBlockBrokenWith).GetMethod("Prefix", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
@@ -55,7 +96,7 @@ namespace GimmeOneSeedPlz
 
 				// Mod compatibility with Toolworks, but only if that mod is present
 				bool toolworks_enabled = sapi.ModLoader.IsModEnabled("toolworks");
-				if (GimmeOneSeedPlzConfig.Loaded.PatchToolworksCollectibleBehaviorFellingOnBlockBrokenWith && toolworks_enabled)
+				if (GimmeOneSeedPlzConfig.Loaded.PatchToolworksCollectibleBehaviorFellingOnBlockBrokenWith.Value && toolworks_enabled)
 				{
 					PatchToolworks();
 
@@ -64,7 +105,7 @@ namespace GimmeOneSeedPlz
 
                 // Mod compatibility with IDG, but only if that mod is present
                 bool indappledgroves_enabled = sapi.ModLoader.IsModEnabled("indappledgroves");
-                if (GimmeOneSeedPlzConfig.Loaded.PatchIDGCollectibleBehaviorWoodChoppingOnBlockBrokenWith && indappledgroves_enabled)
+                if (GimmeOneSeedPlzConfig.Loaded.PatchIDGCollectibleBehaviorWoodChoppingOnBlockBrokenWith.Value && indappledgroves_enabled)
                 {
                     PatchIDG();
 
@@ -106,9 +147,20 @@ namespace GimmeOneSeedPlz
 		{
 			if (world.Side.IsServer() && (byPlayer == null || byPlayer.WorldData.CurrentGameMode != EnumGameMode.Creative))
 			{
-				ItemStack stack = itemStack.Clone();
-				world.SpawnItemEntity(stack, new Vec3d((double)pos.X + 0.5, (double)pos.Y + 0.5, (double)pos.Z + 0.5), null);
-			}
+				ItemStack stack;
+                if (GimmeOneSeedPlzConfig.Loaded.UseAvgVarDropSettings.Value)
+				{
+                    BlockDropItemStack randomDrop = new BlockDropItemStack(itemStack, GimmeOneSeedPlzConfig.Loaded.TreeSeedDropAvg.Value);
+					randomDrop.Quantity.var = GimmeOneSeedPlzConfig.Loaded.TreeSeedDropVar.Value;
+                    stack = randomDrop.GetNextItemStack();
+                }
+				else
+				{
+                    stack = itemStack.Clone();
+                }
+
+                world.SpawnItemEntity(stack, new Vec3d((double)pos.X + 0.5, (double)pos.Y + 0.5, (double)pos.Z + 0.5), null);
+            }
 		}
 
 		public static BlockLeaves GetLeavesFromTreeStack(IWorldAccessor world, Stack<BlockPos> treePositionStack)
