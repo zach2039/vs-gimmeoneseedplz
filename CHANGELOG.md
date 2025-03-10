@@ -1,7 +1,7 @@
 ### v1.20.x-1.1.0
 
 - Add config options to enable and use avg and var drop settings for seeds
-- Refactor config code to auto-append new settings on config options change
+- Refactor config code to auto-append new settings on config options change (thanks, Chrono!)
 
 ### v1.20.x-1.0.7
 

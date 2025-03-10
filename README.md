@@ -39,16 +39,11 @@ Config Settings (`VintageStoryData/ModConfig/GimmeOneSeedPlz.json`)
  * `TreeSeedDropVar`: Sets the variance for quantity of seed drops; defaults to `6.0`.
  
 
-Future Plans
---------
-
- - None, atm.
-
 
 Known Issues
 --------
 
- - None, atm.
+ - ~~Incompatibile with In Dappled Groves for now, due to custom felling behavior not implementing OnBlockBrokenWith.~~ Patching now will work with IDG v2.0.5; thanks to VinterNacht for the help!
 
 
 Extras
