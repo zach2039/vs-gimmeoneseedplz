@@ -36,7 +36,7 @@
       <Private>False</Private>
     </Reference>
 	<Reference Include="InDappledGroves">
-      <HintPath>$(VINTAGE_STORY)/Mods/InDappledGroves.dll</HintPath>
+      <HintPath>InDappledGroves.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
