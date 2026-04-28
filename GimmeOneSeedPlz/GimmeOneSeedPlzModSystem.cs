@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Reflection;
 using System;
-using static Toolworks.Config.ConfigSystem;
 
 namespace GimmeOneSeedPlz
 {
@@ -94,14 +93,6 @@ namespace GimmeOneSeedPlz
 					sapi.Logger.Notification("Applied patch to VintageStory's ItemAxe.OnBlockBrokenWith from Gimme One Seed Plz!");
 				}
 
-				// Mod compatibility with Toolworks, but only if that mod is present
-				bool toolworks_enabled = sapi.ModLoader.IsModEnabled("toolworks");
-				if (GimmeOneSeedPlzConfig.Loaded.PatchToolworksCollectibleBehaviorFellingOnBlockBrokenWith.Value && toolworks_enabled)
-				{
-					PatchToolworks();
-
-					sapi.Logger.Notification("Applied patch to Toolworks' CollectibleBehaviorFelling.OnBlockBrokenWith from Gimme One Seed Plz!");
-				}
 
                 // Mod compatibility with IDG, but only if that mod is present
                 bool indappledgroves_enabled = sapi.ModLoader.IsModEnabled("indappledgroves");
@@ -116,15 +107,6 @@ namespace GimmeOneSeedPlz
 			base.StartServerSide(sapi);
 
 			sapi.Logger.Notification("Loaded Gimme One Seed Plz!");
-		}
-
-		private void PatchToolworks()
-		{
-			var original = typeof(Toolworks.CollectibleBehaviorFelling).GetMethod("OnBlockBrokenWith", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
-			var prefix = typeof(Patch_CollectibleBehaviorFelling_OnBlockBrokenWith).GetMethod("Prefix", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-			var postfix = typeof(Patch_CollectibleBehaviorFelling_OnBlockBrokenWith).GetMethod("Postfix", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-			
-			harmony.Patch(original, new HarmonyMethod(prefix), new HarmonyMethod(postfix));
 		}
 
         private void PatchIDG()

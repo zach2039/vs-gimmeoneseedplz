@@ -12,8 +12,6 @@ namespace GimmeOneSeedPlz
 
         public bool? PatchVanillaItemAxeOnBlockBrokenWith { get; set; }
 
-        public bool? PatchToolworksCollectibleBehaviorFellingOnBlockBrokenWith { get; set; }
-
         public bool? PatchIDGCollectibleBehaviorWoodChoppingOnBlockBrokenWith { get; set; }
 
         public int? GuaranteedTreeSeedsOnFelledCount { get; set; }
@@ -32,7 +30,6 @@ namespace GimmeOneSeedPlz
             GimmeOneSeedPlzConfig defaultConfig = new GimmeOneSeedPlzConfig();
 
             defaultConfig.PatchVanillaItemAxeOnBlockBrokenWith = true;
-            defaultConfig.PatchToolworksCollectibleBehaviorFellingOnBlockBrokenWith = true;
             defaultConfig.PatchIDGCollectibleBehaviorWoodChoppingOnBlockBrokenWith = true;
             defaultConfig.GuaranteedTreeSeedsOnFelledCount = 1;
             defaultConfig.MinRequiredBlocksBrokenOnFullFellCount = 3;
