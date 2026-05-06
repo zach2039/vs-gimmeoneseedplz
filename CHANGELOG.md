@@ -1,7 +1,7 @@
 ### v1.22.x-1.2.1
 
-- Update to VS-v1.22.x
-- Remove outdated Toolworks compatibility patch
+- Update to VS-v1.22.x (thanks to xjr!)
+- Remove outdated Toolworks compatibility patch (thanks to xjr!)
 
 ### v1.21.x-1.2.0
 
