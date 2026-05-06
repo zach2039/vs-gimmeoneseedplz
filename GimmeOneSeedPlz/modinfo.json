@@ -5,6 +5,9 @@
 	"authors": [
 		"Zach2039"
 	],
+	"contributors": [
+	  "xjr"
+	],
 	"description": "A mod that keeps your sanity when looking for tree seeds from your favorite trees; trees will always drop one seed when felled.",
 	"version": "1.2.1",
 	"dependencies": {

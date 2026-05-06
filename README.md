@@ -1,8 +1,6 @@
 Gimme One Seed Plz
 =================
 
-> **Note:** This is an unofficial fork of the [original mod](https://mods.vintagestory.at/gimmeoneseedplz) targeting Vintage Story v1.22.0. It will be retired and should be replaced with the original once the original mod is updated for this game version.
-
 A server-side mod that preserves your sanity when looking for tree seeds from your favorite trees; trees will always drop at least one seed when felled.
 
 Overview
@@ -38,7 +36,6 @@ Config Settings (`VintageStoryData/ModConfig/GimmeOneSeedPlz.json`)
  
  * `TreeSeedDropVar`: Sets the variance for quantity of seed drops; defaults to `6.0`.
  
-
 
 Known Issues
 --------

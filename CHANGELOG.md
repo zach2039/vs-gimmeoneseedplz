@@ -1,10 +1,11 @@
-### v1.22.x-1.2.1 (Fork)
+### v1.22.x-1.2.1
 
+- Update to VS-v1.22.x
 - Remove outdated Toolworks compatibility patch
 
-### v1.26.x-1.2.0
+### v1.21.x-1.2.0
 
- - Update to VS-v1.26.6
+ - Update to VS-v1.21.6
 
 ### v1.20.x-1.1.0
 
