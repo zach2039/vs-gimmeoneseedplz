@@ -17,6 +17,7 @@ Compatibility
 --------
 
  - Should be compatibile with [Wildcraft Trees](https://mods.vintagestory.at/wildcrafttree), and any other mod that uses "treeseed-{wood}" as an item for their trees.
+ - Now compatible with [Under Tangled Boughs](https://mods.vintagestory.at/show/mod/18763); seed search will fallback to "game:" domain if modded leaf or block doesn't have an associated seed.
 
 
 Config Settings (`VintageStoryData/ModConfig/GimmeOneSeedPlz.json`)
